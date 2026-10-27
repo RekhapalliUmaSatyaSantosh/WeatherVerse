@@ -1,0 +1,844 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherVerse | Explore Your Sky</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            padding: 30px;
+            font-family: 'DM Sans', sans-serif;
+            color: #F0F2F5;
+            background:
+                radial-gradient(ellipse at 10% 0%, #5B3DF533, transparent 35%),
+                radial-gradient(ellipse at 100% 40%, #6A00F422, transparent 35%),
+                #0B132B;
+        }
+        .page {
+            max-width: 1250px;
+            margin: auto;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #E8DEFF20;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 50px;
+            height: 50px;
+            border: 1px solid #B6FF2E70;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #6A00F4, #1A0B2E);
+            box-shadow: 0 0 25px #6A00F433;
+            font-size: 26px;
+        }
+        .brand h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 23px;
+            letter-spacing: -1px;
+        }
+        .brand h1 span {
+            color: #B7FF72;
+        }
+        .brand p {
+            margin-top: 3px;
+            color: #AAB6D2;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 1px solid #39FF8830;
+            border-radius: 30px;
+            background: #18251D;
+            color: #39FF88;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .live-indicator span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #39FF88;
+            box-shadow: 0 0 12px #39FF88;
+        }
+        .intro {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 25px;
+            padding: 38px 0 25px;
+        }
+        .eyebrow {
+            margin-bottom: 14px;
+            color: #B7FF72;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .intro h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(32px, 4.5vw, 53px);
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+        .intro h2 em {
+            color: #FFD6A5;
+            font-style: normal;
+        }
+        .intro p {
+            max-width: 470px;
+            margin-top: 13px;
+            color: #AAB6D2;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        .intro {
+            position: relative;
+            isolation: isolate;
+            display: flex;
+            align-items: center;
+            min-height: 350px;
+            padding: 30px 0;
+        }
+        .intro::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: -30px;
+            right: -5%;
+            width: 75%;
+            height: 125%;
+            background:
+                linear-gradient(90deg, #0B132B 0%, #0B132B66 30%, #0B132B00 70%),
+                linear-gradient(0deg, #0B132B 0%, transparent 28%),
+                radial-gradient(1.5px 1.5px at 12% 14%, #fff 50%, transparent),
+                radial-gradient(1px 1px at 24% 30%, #fff 50%, transparent),
+                radial-gradient(2px 2px at 38% 10%, #FFF1A6 50%, transparent),
+                radial-gradient(1px 1px at 52% 24%, #fff 50%, transparent),
+                radial-gradient(1.5px 1.5px at 63% 8%, #fff 50%, transparent),
+                radial-gradient(1px 1px at 76% 20%, #E8DEFF 50%, transparent),
+                radial-gradient(2px 2px at 88% 12%, #fff 50%, transparent),
+                radial-gradient(1px 1px at 94% 34%, #fff 50%, transparent),
+                radial-gradient(1.5px 1.5px at 45% 40%, #fff 50%, transparent),
+                radial-gradient(circle at 74% 66%, #FFF1A6 0, #FFD6A5 3%, #FF611577 12%, transparent 32%),
+                radial-gradient(ellipse 55% 35% at 28% 28%, #7A35FF66, transparent 70%),
+                radial-gradient(ellipse 45% 30% at 82% 22%, #39FF8838, transparent 70%),
+                linear-gradient(180deg, #0B132B 0%, #2B1A6B 38%, #7A35FF 60%, #FF8A4C 84%, #FFD6A5 100%);
+            opacity: .95;
+            filter: saturate(1.15);
+            pointer-events: none;
+            animation: sky-twinkle 5s ease-in-out infinite alternate;
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 35%, #000 80%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 35%, #000 80%, transparent 100%);
+        }
+        .intro::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: -30px;
+            right: -5%;
+            width: 75%;
+            height: 125%;
+            background:
+                radial-gradient(ellipse 26% 6% at 30% 58%, #E8DEFFAA, transparent 70%),
+                radial-gradient(ellipse 30% 7% at 68% 50%, #FFB7A5AA, transparent 70%),
+                radial-gradient(ellipse 22% 5% at 50% 72%, #FFD6A5AA, transparent 70%),
+                radial-gradient(ellipse 20% 5% at 85% 66%, #E8DEFF88, transparent 70%);
+            filter: blur(6px);
+            pointer-events: none;
+            animation: cloud-drift 22s ease-in-out infinite alternate;
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 35%, #000 80%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 35%, #000 80%, transparent 100%);
+        }
+        @keyframes sky-twinkle {
+            from { opacity: .85; }
+            to   { opacity: 1; }
+        }
+        @keyframes cloud-drift {
+            from { transform: translateX(-3%); }
+            to   { transform: translateX(3%); }
+        }
+        .intro-content {
+            position: relative;
+            z-index: 1;
+            width: 55%;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 500px;
+            padding: 7px;
+            margin-bottom: 25px;
+            border: 1px solid #7A35FF80;
+            border-radius: 17px;
+            background: #101B35;
+            box-shadow: 0 8px 35px #6A00F418;
+        }
+        .search-icon {
+            padding-left: 13px;
+            color: #FFD6A5;
+            font-size: 22px;
+        }
+        .search-form input {
+            flex: 1;
+            min-width: 0;
+            height: 46px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #F0F2F5;
+            font-size: 14px;
+        }
+        .search-form input::placeholder {
+            color: #8997B5;
+        }
+        .search-form button {
+            height: 46px;
+            padding: 0 26px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(110deg, #6A00F4, #7A35FF);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .25s;
+        }
+        .search-form button:hover {
+            background: linear-gradient(110deg, #7A35FF, #FF6115);
+            box-shadow: 0 0 22px #7A35FF60;
+            transform: translateY(-2px);
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: minmax(0, 1.65fr) minmax(270px, .85fr);
+            gap: 19px;
+        }
+        .panel {
+            overflow: hidden;
+            border: 1px solid #E8DEFF20;
+            border-radius: 22px;
+            background: linear-gradient(145deg, #172445, #10182F);
+        }
+        .weather-card {
+            position: relative;
+            padding: 27px;
+            border-color: #7A35FF65;
+            isolation: isolate;
+        }
+        .weather-card::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: -110px;
+            right: -100px;
+            width: 310px;
+            height: 310px;
+            border-radius: 50%;
+            background: #7A35FF18;
+            filter: blur(8px);
+        }
+        .weather-card::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 90px;
+            background: linear-gradient(0deg, #6A00F416, transparent);
+        }
+        .city-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .city-pin {
+            display: grid;
+            place-items: center;
+            width: 43px;
+            height: 43px;
+            border: 1px solid #39FF8840;
+            border-radius: 14px;
+            background: #18251D;
+            color: #39FF88;
+            font-size: 20px;
+        }
+        .city-heading h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            overflow-wrap: anywhere;
+        }
+        .city-heading p {
+            margin-top: 4px;
+            color: #AAB6D2;
+            font-size: 12px;
+        }
+        .weather-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            min-height: 240px;
+        }
+        .weather-description {
+            color: #FFD6A5;
+            font-size: 14px;
+            text-transform: capitalize;
+        }
+        .temperature {
+            margin-top: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(65px, 8vw, 105px);
+            font-weight: 700;
+            letter-spacing: -7px;
+            line-height: 1.1;
+            background: linear-gradient(115deg, #FFF1A6, #FFD6A5, #FFB7A5, #FF6115);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .temperature span {
+            font-size: .4em;
+            vertical-align: top;
+            letter-spacing: -2px;
+        }
+        .weather-range {
+            display: flex;
+            gap: 17px;
+            margin-top: 13px;
+            color: #AAB6D2;
+            font-size: 12px;
+        }
+        .weather-range strong {
+            color: #B7FF72;
+        }
+        .sky-art {
+            position: relative;
+            flex: 0 0 42%;
+            height: 190px;
+        }
+        .sky-sun {
+            position: absolute;
+            top: 5px;
+            right: 25%;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #FFF1A6, #FFD6A5 55%, #FF6115);
+            box-shadow: 0 0 30px #FFB7A555, 0 0 65px #FF611522;
+            animation: sun-float 4s ease-in-out infinite;
+        }
+        .sky-cloud {
+            position: absolute;
+            right: 0;
+            bottom: 32px;
+            width: 140px;
+            height: 46px;
+            border-radius: 45px;
+            background: linear-gradient(180deg, #F0F2F5, #B8C7F2);
+            box-shadow: 0 12px 30px #0B132B90;
+        }
+        .sky-cloud::before,
+        .sky-cloud::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            background: inherit;
+        }
+        .sky-cloud::before {
+            top: -39px;
+            left: 18px;
+            width: 67px;
+            height: 67px;
+        }
+        .sky-cloud::after {
+            top: -52px;
+            right: 13px;
+            width: 84px;
+            height: 84px;
+        }
+        .sky-star {
+            position: absolute;
+            top: 40px;
+            left: 4px;
+            color: #B6FF2E;
+            font-size: 23px;
+            animation: star-glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes sun-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+        @keyframes star-glow {
+            from { opacity: .45; }
+            to { opacity: 1; }
+        }
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0;
+            padding: 16px 0;
+            border: 1px solid #E8DEFF1A;
+            border-radius: 15px;
+            background: #0B132B90;
+        }
+        .quick-stat {
+            min-width: 0;
+            padding: 5px 12px;
+            border-right: 1px solid #E8DEFF20;
+        }
+        .quick-stat:last-child {
+            border-right: none;
+        }
+        .quick-stat span {
+            display: block;
+            margin-bottom: 9px;
+            color: #AAB6D2;
+            font-size: 10px;
+        }
+        .quick-stat strong {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            overflow-wrap: anywhere;
+        }
+        .quick-stat:nth-child(1) strong { color: #39FF88; }
+        .quick-stat:nth-child(2) strong { color: #FFD6A5; }
+        .quick-stat:nth-child(3) strong { color: #E8DEFF; }
+        .quick-stat:nth-child(4) strong { color: #B7FF72; }
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 19px;
+        }
+        .section-heading h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 19px;
+        }
+        .section-heading span {
+            color: #B7FF72;
+            font-size: 11px;
+        }
+        .details-section {
+            margin-top: 20px;
+        }
+        .details {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .detail {
+            position: relative;
+            min-height: 120px;
+            padding: 15px;
+            overflow: hidden;
+            border: 1px solid #E8DEFF20;
+            border-radius: 16px;
+            transition: transform .2s, border-color .2s;
+        }
+        .detail:hover {
+            transform: translateY(-4px);
+            border-color: #E8DEFF70;
+        }
+        .detail::after {
+            content: "";
+            position: absolute;
+            right: -25px;
+            bottom: -30px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: .08;
+            filter: blur(5px);
+        }
+        .detail-icon {
+            display: grid;
+            place-items: center;
+            width: 31px;
+            height: 31px;
+            margin-bottom: 12px;
+            border: 1px solid currentColor;
+            border-radius: 10px;
+            background: #FFFFFF09;
+            font-size: 14px;
+        }
+        .detail span {
+            display: block;
+            margin-bottom: 6px;
+            color: #D0D8EA;
+            font-size: 10px;
+        }
+        .detail strong {
+            display: block;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+            overflow-wrap: anywhere;
+        }
+        .detail:nth-child(1) {
+            color: #FFB7A5;
+            background: linear-gradient(145deg, #6B352A, #23262F);
+        }
+        .detail:nth-child(2) {
+            color: #E8DEFF;
+            background: linear-gradient(145deg, #5B3DF5, #1A0B2E);
+        }
+        .detail:nth-child(3) {
+            color: #B7FF72;
+            background: linear-gradient(145deg, #18251D, #0B132B);
+        }
+        .detail:nth-child(4) {
+            color: #FFD6A5;
+            background: linear-gradient(145deg, #6B352A, #1A0B2E);
+        }
+        .detail:nth-child(5) {
+            color: #E8DEFF;
+            background: linear-gradient(145deg, #1A0B2E, #5B3DF5);
+        }
+        .detail:nth-child(6) {
+            color: #39FF88;
+            background: linear-gradient(145deg, #18251D, #23262F);
+        }
+        .detail:nth-child(7) {
+            color: #B7FF72;
+            background: linear-gradient(145deg, #0B132B, #18251D);
+        }
+        .detail:nth-child(8) {
+            color: #FFB7A5;
+            background: linear-gradient(145deg, #6B352A, #23262F);
+        }
+        .detail:nth-child(9) {
+            color: #FFF1A6;
+            background: linear-gradient(145deg, #54421A, #23262F);
+        }
+        .detail:nth-child(10) {
+            color: #FFB7A5;
+            background: linear-gradient(145deg, #6B352A, #1A0B2E);
+        }
+        .detail:nth-child(11) {
+            color: #E8DEFF;
+            background: linear-gradient(145deg, #5B3DF5, #1A0B2E);
+        }
+        .detail:nth-child(12) {
+            color: #B7FF72;
+            background: linear-gradient(145deg, #18251D, #0B132B);
+        }
+        .forecast {
+            padding: 22px 17px;
+        }
+        .forecast-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .forecast-row {
+            display: grid;
+            grid-template-columns: 38px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 10px;
+            border: 1px solid #E8DEFF1B;
+            border-radius: 14px;
+            background: #FFFFFF05;
+            transition: .2s;
+        }
+        .forecast-row:hover {
+            border-color: #7A35FF80;
+            background: #6A00F415;
+        }
+        .forecast-symbol {
+            display: grid;
+            place-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
+            background: #7A35FF28;
+            font-size: 19px;
+        }
+        .forecast-row h4 {
+            font-size: 12px;
+        }
+        .forecast-row p {
+            margin-top: 4px;
+            color: #AAB6D2;
+            font-size: 10px;
+            text-transform: capitalize;
+        }
+        .forecast-row strong {
+            color: #FFD6A5;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .forecast-message {
+            margin-top: 17px;
+            padding: 15px;
+            border: 1px solid #B6FF2E35;
+            border-radius: 14px;
+            background: #18251D;
+        }
+        .forecast-message h4 {
+            margin-bottom: 7px;
+            color: #B7FF72;
+            font-size: 12px;
+        }
+        .forecast-message p {
+            color: #C4D0C4;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+        footer{
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding-top: 27px;
+            margin-top: 25px;
+            border-top: 1px solid #E8DEFF20;
+            color: #AAB6D2;
+            font-size: 11px;
+        }
+        footer strong{
+            color: #B7FF72;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">☀</div>
+            <div>
+                <h1>Weather<span>Verse</span></h1>
+                <p>Your world, your weather</p>
+            </div>
+        </div>
+        <div class="live-indicator">
+            <span></span>
+            WEATHER EXPLORER
+        </div>
+    </header>    
+    <section class="intro">
+        <div class="intro-content">
+            <div class="eyebrow">Your personal sky station</div>
+            <h2>Look beyond<br>the <em>forecast.</em></h2>
+            <p>
+                One city, a thousand sky stories. Discover the
+                atmosphere around you with a weather dashboard
+                designed for curious minds.
+            </p>
+        </div>
+    </section>
+    <form class="search-form" action="" method="post">
+        {% csrf_token %}
+        <div class="search-icon">⌕</div>
+        <input type="text" name="city" placeholder="Enter a city" aria-label="City name" required>
+        <button type="submit">Explore ↗</button>
+    </form>
+    {% if data %}
+    <main>
+        <div class="dashboard">
+            <section class="panel weather-card">
+                <div class="city-heading">
+                    <div class="city-pin">⌖</div>
+                    <div>
+                        <h3>{{ data.city }}</h3>
+                        <p>Your selected destination</p>
+                    </div>
+                </div>
+                <div class="weather-main">
+                    <div>
+                        <p class="weather-description">{{ data.description|default:data.weather }}</p>
+                        <div class="temperature">
+                            {{ data.temp }}<span>°C</span>
+                        </div>
+                        <div class="weather-range">
+                            <span>MIN <strong>{{ data.temp_min }}°</strong></span>
+                            <span>MAX <strong>{{ data.temp_max }}°</strong></span>
+                        </div>
+                    </div>
+                    <div class="sky-art" aria-hidden="true">
+                        <div class="sky-star">✦</div>
+                        <div class="sky-sun"></div>
+                        <div class="sky-cloud"></div>
+                    </div>
+                </div>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <span>💧 HUMIDITY</span>
+                        <strong>{{ data.humidity }}%</strong>
+                    </div>
+                    <div class="quick-stat">
+                        <span>〰 WIND SPEED</span>
+                        <strong>{{ data.wind_speed }} m/s</strong>
+                    </div>
+                    <div class="quick-stat">
+                        <span>◉ PRESSURE</span>
+                        <strong>{{ data.pressure }} hPa</strong>
+                    </div>
+                    <div class="quick-stat">
+                        <span>◎ VISIBILITY</span>
+                        <strong>{{ data.visibility }} m</strong>
+                    </div>
+                </div>
+            </section>
+            <aside class="panel forecast">
+                <div class="section-heading">
+                    <h3>Sky essentials</h3>
+                    <span>12 DETAILS</span>
+                </div>
+                <div class="forecast-list">
+                    <div class="forecast-row">
+                        <div class="forecast-symbol">🌡</div>
+                        <div>
+                            <h4>Feels like</h4>
+                            <p>Perceived temperature</p>
+                        </div>
+                        <strong>{{ data.feels_like }}°C</strong>
+                    </div>
+                    <div class="forecast-row">
+                        <div class="forecast-symbol">🌡</div>
+                        <div>
+                            <h4>Lowest</h4>
+                            <p>Minimum temperature</p>
+                        </div>
+                        <strong>{{ data.temp_min }}°C</strong>
+                    </div>
+                    <div class="forecast-row">
+                        <div class="forecast-symbol">🔥</div>
+                        <div>
+                            <h4>Highest</h4>
+                            <p>Maximum temperature</p>
+                        </div>
+                        <strong>{{ data.temp_max }}°C</strong>
+                    </div>
+                    <div class="forecast-row">
+                        <div class="forecast-symbol">🌊</div>
+                        <div>
+                            <h4>Sea level</h4>
+                            <p>Atmospheric reading</p>
+                        </div>
+                        <strong>{{ data.sea_level|default:"—" }}{% if data.sea_level %} hPa{% endif %}</strong>
+                    </div>
+                </div>
+                <div class="forecast-message">
+                    <h4>✦ A little sky wisdom</h4>
+                    <p>Your weather is more than a number. Check humidity, wind and visibility together to better understand the conditions around your city.</p>
+                </div>
+            </aside>
+        </div>
+        <section class="details-section">
+            <div class="section-heading">
+                <h3>Atmospheric fingerprint</h3>
+                <span>LIVE WEATHER DATA</span>
+            </div>
+            <div class="details">
+                <div class="detail">
+                    <div class="detail-icon">🌡</div>
+                    <span>Feels Like</span>
+                    <strong>{{ data.feels_like }} °C</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">❄</div>
+                    <span>Min Temperature</span>
+                    <strong>{{ data.temp_min }} °C</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">☀</div>
+                    <span>Max Temperature</span>
+                    <strong>{{ data.temp_max }} °C</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">💧</div>
+                    <span>Humidity</span>
+                    <strong>{{ data.humidity }}%</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">◉</div>
+                    <span>Pressure</span>
+                    <strong>{{ data.pressure }} hPa</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">🌊</div>
+                    <span>Sea Level</span>
+                    <strong>{{ data.sea_level|default:"—" }}{% if data.sea_level %} hPa{% endif %}</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">◎</div>
+                    <span>Visibility</span>
+                    <strong>{{ data.visibility }} m</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">〰</div>
+                    <span>Wind Speed</span>
+                    <strong>{{ data.wind_speed }} m/s</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">🌅</div>
+                    <span>Sunrise</span>
+                    <strong>{{ data.sunrise|default:"—" }}</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">🌇</div>
+                    <span>Sunset</span>
+                    <strong>{{ data.sunset|default:"—" }}</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">↔</div>
+                    <span>Longitude</span>
+                    <strong>{{ data.longitude }}</strong>
+                </div>
+                <div class="detail">
+                    <div class="detail-icon">↕</div>
+                    <span>Latitude</span>
+                    <strong>{{ data.latitude }}</strong>
+                </div>
+            </div>
+        </section>
+    </main>
+    {% else %}
+    <section class="panel" style="padding:45px 20px;text-align:center;">
+        <div style="font-size:60px;margin-bottom:18px;">🌤️</div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:27px;">
+            Your sky story starts here.
+        </h2>
+        <p style="margin-top:12px;color:#AAB6D2;line-height:1.8;font-size:13px;">
+            Search for any city above to discover its current weather conditions.
+        </p>
+        <div style="margin-top:22px;color:#B7FF72;font-size:12px;letter-spacing:2px;">
+            SEARCH · DISCOVER · EXPLORE
+        </div>
+    </section>
+    {% endif %}
+    <footer>
+        <div>✦ <strong>WeatherVerse</strong> — Every sky has a story.</div>
+        <div>Built with Django · Designed for discovery</div>
+    </footer>
+</div>
+</body>
+</html>
