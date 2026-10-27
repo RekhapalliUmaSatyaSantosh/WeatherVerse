@@ -1,7 +1,6 @@
 \# 🌦️ WeatherVerse — Django Weather Forecast App
 
 
-
 WeatherVerse is a weather forecasting web application built with \*\*Python and Django\*\* that uses a weather API to retrieve weather information based on a user's search. It combines backend development with a clean, modern interface to make checking the weather simple and convenient.
 
 
